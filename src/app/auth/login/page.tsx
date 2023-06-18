@@ -2,6 +2,7 @@
 import { LoginButton } from '@/components/atoms/button/LoginButton';
 import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 export default async function LoginPage() {
   const providers = await getProviders();

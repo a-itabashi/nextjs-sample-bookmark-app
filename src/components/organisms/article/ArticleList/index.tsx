@@ -1,9 +1,7 @@
-// import { ArticleList } from '@/components/organisms/article/ArticleList';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 
-// TODO: 後ほどリファクタ
-export default async function ArticlePage() {
+export const ArticleList = async () => {
   const articles = await prisma.article.findMany();
   return (
     <div className='container mx-auto'>
@@ -32,4 +30,4 @@ export default async function ArticlePage() {
       </div>
     </div>
   );
-}
+};
