@@ -1,10 +1,17 @@
 'use client';
-import { getProviders, signIn } from 'next-auth/react';
+import { LoginButton } from '@/components/atoms/Button/LoginButton';
+import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Image from 'next/image';
 
 export default async function LoginPage() {
   const providers = await getProviders();
-  console.log(providers);
+
+  const handleSubmit = (provider: ClientSafeProvider) => {
+    signIn(provider.id, {
+      callbackUrl: '/',
+    });
+  };
+
   return (
     <div className='flex flex-col items-center space-y-20 pt-40'>
       <Image src='/next.svg' width={150} height={150} alt='test' />
@@ -15,22 +22,9 @@ export default async function LoginPage() {
               Object.values(providers).map((provider) => {
                 return (
                   <div key={provider.name}>
-                    <button
-                      className='group relative inline-flex items-center justify-start overflow-hidden rounded bg-white px-6 py-3 font-medium transition-all hover:bg-white'
-                      // このボタンを押すと GitHub による認証が行われます
-                      // また、認証後のリダイレクト先をルートパスに設定しています
-                      // リダイレクト先については後ほど変更します
-                      onClick={() =>
-                        signIn(provider.id, {
-                          callbackUrl: '/',
-                        })
-                      }
-                    >
-                      <span className='absolute bottom-0 left-0 mb-9 ml-9 h-48 w-48 -translate-x-full translate-y-full rotate-[-40deg] rounded bg-slate-800 transition-all duration-500 ease-out group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0'></span>
-                      <span className='relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white'>
-                        Sign in with {provider.name}
-                      </span>
-                    </button>
+                    <LoginButton onClick={() => handleSubmit(provider)}>
+                      Sign in with {provider.name}
+                    </LoginButton>
                   </div>
                 );
               })}
@@ -40,12 +34,3 @@ export default async function LoginPage() {
     </div>
   );
 }
-
-// export const getServerSideProps = async () => {
-//   // ここで、認証の方法を取得しています
-//   // 今回は、GitHub による認証だけですが、複数の認証方法（Google・Twitterなど）を取得することが出来ます
-//   const providers = await getProviders();
-//   return {
-//     props: { providers },
-//   };
-// };
