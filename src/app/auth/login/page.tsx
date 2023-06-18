@@ -1,5 +1,5 @@
 'use client';
-import { LoginButton } from '@/components/atoms/Button/LoginButton';
+import { LoginButton } from '@/components/atoms/button/LoginButton';
 import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Image from 'next/image';
 
